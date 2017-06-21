@@ -53,5 +53,5 @@ echo 'Waiting, to give containers time to link...'
 sleep 10
 echo 'Creating...'
 echo $AUTH_DATABASE
-mongo -u $ADMIN_USER -p $ADMIN_PASSWORD --authenticationDatabase $AUTH_DATABASE --host $HOST --eval "db.createUser({ user: \"$NEW_USER\", pwd: \"$NEW_PASSWORD\", roles: [{ role: \"readWrite\", db: \"$NEW_DATABASE\" }] })"
+mongo -u $ADMIN_USER -p $ADMIN_PASSWORD --authenticationDatabase $AUTH_DATABASE --host=$HOST --eval "db=db.getSiblingDB(\"$NEW_DATABASE\"); db.createUser({ user: \"$NEW_USER\", pwd: \"$NEW_PASSWORD\", roles: [{ role: \"readWrite\", db: \"$NEW_DATABASE\" }] }); db.auth(\"$NEW_USER\",\"$NEW_PASSWORD\"); db.created.insert({date: new Date()})"
 echo 'All done.'
